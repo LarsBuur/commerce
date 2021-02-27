@@ -22,24 +22,98 @@ This project is currently <b>under development</b>.
 - Dark Mode Support
 
 ## Work in progress
+
 We're using Github Projects to keep track of issues in progress and todo's. Here is our [Board](https://github.com/vercel/commerce/projects/1)
 
 ## Integrations
-Next.js Commerce integrates out-of-the-box with BigCommerce. We plan to support all major ecommerce backends.
 
+Next.js Commerce integrates out-of-the-box with BigCommerce. We plan to support all major ecommerce backends.
 
 ## Goals
 
-* **Next.js Commerce** should have a completely data **agnostic** UI
-* **Aware of schema**: should ship with the right data schemas and types.
-* All providers should return the right data types and schemas to blend correctly with Next.js Commerce.
-* `@framework` will be the alias utilized in commerce and it will map to the ecommerce provider of preference- e.g BigCommerce, Shopify, Swell. All providers should expose the same standardized functions. _Note that the same applies for recipes using a CMS + an ecommerce provider._
+- **Next.js Commerce** should have a completely data **agnostic** UI
+- **Aware of schema**: should ship with the right data schemas and types.
+- All providers should return the right data types and schemas to blend correctly with Next.js Commerce.
+- `@framework` will be the alias utilized in commerce and it will map to the ecommerce provider of preference- e.g BigCommerce, Shopify, Swell. All providers should expose the same standardized functions. _Note that the same applies for recipes using a CMS + an ecommerce provider._
 
 There is a `framework` folder in the root folder that will contain multiple ecommerce providers.
 
 Additionally, we need to ensure feature parity (not all providers have e.g. wishlist) we will also have to build a feature API to disable/enable features in the UI.
 
 People actively working on this project: @okbel & @lfades.
+
+## Framework
+
+Framework is where the data comes from. It contains mostly hooks and functions.
+
+## Structure
+
+Main folder and its exposed functions
+
+- `product`
+  - usePrice
+  - useSearch
+  - getProduct
+  - getAllProducts
+- `wishlist`
+  - useWishlist
+  - useAddItem
+  - useRemoveItem
+- `auth`
+  - useLogin
+  - useLogout
+  - useSignup
+- `customer`
+  - useCustomer
+  - getCustomerId
+  - getCustomerWistlist
+- `cart`
+
+  - useCart
+  - useAddItem
+  - useRemoveItem
+  - useUpdateItem
+
+- `config.json`
+- README.md
+
+#### Example of correct usage of Commerce Framework
+
+```js
+import { useUI } from '@components/ui'
+import { useCustomer } from '@framework/customer'
+import { useWishlist, useAddItem, useRemoveItem } from '@framework/wishlist'
+```
+
+## Config
+
+### Features
+
+In order to make the UI entirely functional, we need to specify which features certain providers do not **provide**.
+
+**Disabling wishlist:**
+
+```
+{
+  "features": {
+    "wishlist": false
+  }
+}
+```
+
+## Contribute
+
+Our commitment to Open Source can be found [here](https://vercel.com/oss).
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
+2. Create a new branch `git checkout -b MY_BRANCH_NAME`
+3. Install yarn: `npm install -g yarn`
+4. Install the dependencies: `yarn`
+5. Duplicate `.env.template` and rename it to `.env.local`.
+6. Add proper store values to `.env.local`.
+7. Run `yarn dev` to build and watch for code changes
+8. The development branch is `canary` (this is the branch pull requests should be made against).
+   On a release, `canary` branch is rebased into `master`.
 
 ## Troubleshoot
 
@@ -57,6 +131,7 @@ BIGCOMMERCE_STOREFRONT_API_TOKEN=<>
 BIGCOMMERCE_STORE_API_URL=<>
 BIGCOMMERCE_STORE_API_TOKEN=<>
 BIGCOMMERCE_STORE_API_CLIENT_ID=<>
+BIGCOMMERCE_CHANNEL_ID=<>
 ```
 
 If your project was started with a "Deploy with Vercel" button, you can use Vercel's CLI to retrieve these credentials.
@@ -77,22 +152,3 @@ After Email confirmation, Checkout should be manually enabled through BigCommerc
 <br>
 BigCommerce team has been notified and they plan to add more detailed about this subject.
 </details>
-
-## Contribute
-
-Our commitment to Open Source can be found [here](https://vercel.com/oss).
-
-1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
-2. Create a new branch `git checkout -b MY_BRANCH_NAME`
-3. Install yarn: `npm install -g yarn`
-4. Install the dependencies: `yarn`
-5. Duplicate `.env.template` and rename it to `.env.local`.
-6. Add proper store values to `.env.local`.
-7. Run `yarn dev` to build and watch for code changes
-8. The development branch is `canary` (this is the branch pull requests should be made against).
-   On a release, `canary` branch is rebased into `master`.
-
-
-
-
-
